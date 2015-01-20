@@ -7,12 +7,15 @@ var elems = {
   dateForm: "form#showbookings",
   selectName: "bokdag",
   selectId: "#seldate",
-  table: "center + table > tbody"
+  table: "center + table > tbody",
+  bookForm: 'form[action="bokaupd_po.asp"]'
 };
 
 var day = "on";
 var time = "12";
 var room = "12";
+var card = "";
+var name = "bookr";
 
 casper.start(url);
 
@@ -58,7 +61,6 @@ casper.then(function() {
 
   var button = elems.table + " tr:nth-of-type(" + rowChild + ")" +
       " td:nth-of-type(" + colChild + ") a";
-  utils.dump(button);
   var available = this.exists(button);
   if (!available) {
     this.die("The room is already booked");
@@ -67,7 +69,11 @@ casper.then(function() {
 });
 
 casper.then(function() {
-  this.echo(this.getCurrentUrl());
+  this.fill(elems.bookForm, {
+    loan: card,
+    anv: name
+  }, true);
+  this.echo("Successful booking");
 });
 
 casper.run();

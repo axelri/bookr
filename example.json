@@ -1,0 +1,16 @@
+[
+  {
+    "day": "on",
+    "time": "12",
+    "room": "12",
+    "name": "bookr1",
+    "card": "xxxxxxxx"
+  },
+  {
+    "day": "to",
+    "time": "12",
+    "room": "10",
+    "name": "bookr2",
+    "card": "xxxxxxxx"
+  }
+]

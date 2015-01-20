@@ -69,7 +69,7 @@ _.forEach(bookings, function(b) {
     var rowChild = rowIndex + 2;
 
     var button = elems.table + " tr:nth-of-type(" + rowChild + ")" +
-        " td:nth-of-type(" + colChild + ") a";
+        " td:nth-of-type(" + colChild + ") > a";
     var available = this.exists(button);
     if (!available) {
       failReason = "The room is already booked";

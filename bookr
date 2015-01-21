@@ -1,2 +1,7 @@
 #!/usr/bin/env bash
-casperjs ./bookr.js
+if [ "$#" -lt 1 ]
+then
+    echo "Usage: bookr <jobs>"
+else
+    casperjs ./bookr.js $1
+fi

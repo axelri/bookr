@@ -1,6 +1,5 @@
 var utils = require("utils");
 var _ = require("lodash");
-var bookings = require("./bookings.json");
 
 var url = 'http://bokning.lib.kth.se/bokning_po.asp?bibid=KTHB&typ=Grp';
 var elems = {
@@ -11,13 +10,35 @@ var elems = {
   bookForm: 'form[action="bokaupd_po.asp"]'
 };
 
-var finished = 0;
+var casperProc = require("casper").create();
+var bookings = require(casperProc.cli.args[0]);
+if(casperProc.cli.args.length < 1) {
+  casperProc.die("Missing jobs file");
+}
 
+var finished = 0;
+var keys = ["day", "time", "room", "name", "card"];
 _.forEach(bookings, function(b) {
 
-  var casper = require('casper').create();
   var fail = false;
   var failReason = "";
+
+  _.every(keys, function(k) {
+    if (!b.hasOwnProperty(k)) {
+      fail = true;
+      failReason = "Missing key: " + k;
+      return false;
+    }
+    return true;
+  });
+
+  if (fail) {
+      console.log("Booking error: " + failReason);
+      finished += 1;
+      return;
+  }
+
+  var casper = require('casper').create();
   casper.start(url);
   casper.then(function() {
     if (fail) {return;}
@@ -115,3 +136,7 @@ _.forEach(bookings, function(b) {
     }
   });
 });
+
+if (finished >= bookings.length) {
+  casperProc.exit();
+}

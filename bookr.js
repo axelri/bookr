@@ -113,12 +113,18 @@ _.forEach(bookings, function(b) {
     if (fail) {return;}
 
     var error = "p > span";
+    var invalidCard = new RegExp("Felaktigt Bibliotekskortsnummer");
+    var used = new RegExp("Du får endast boka 1 pass per dag" +
+                          " och 2 pass per vecka");
     if (this.exists(error)) {
       var el = this.getElementInfo(error);
-      if (el.text.match(new RegExp("Felaktigt"))) {
-        failReason = "Invalid card number";
+      if (el.text.match(invalidCard)) {
         fail = true;
+        failReason = "Invalid card number";
         return;
+      } else if (el.text.match(used)) {
+        fail = true;
+        failReason = "Card already used";
       }
     }
   });
